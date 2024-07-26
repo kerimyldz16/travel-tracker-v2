@@ -40,6 +40,10 @@ h1 {
   color: #ffffff;
   font-size: 1.5rem;
   cursor: pointer;
+  transition: transform 0.3s;
+}
+.fa-bars:hover {
+  transform: rotate(90deg);
 }
 
 form {
@@ -71,11 +75,11 @@ form button {
   color: #21252b;
   cursor: pointer;
   font-size: 1rem;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s, color 0.3s, transform 0.3s;
 }
-
 form button:hover {
   background-color: #21a1f1;
+  transform: scale(1.1);
 }
 
 form .fa-search {
@@ -105,17 +109,21 @@ form .fa-search {
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
   z-index: 1000;
   overflow-y: auto;
+  animation: slideInFromLeft 0.5s ease-out;
 }
 
 .sidebar h2 {
   margin: 0 0 1rem 0;
+  animation: fadeIn 1s ease-in-out;
 }
 
 .sidebar p {
   margin: 0.5rem 0;
+  transition: color 0.3s, transform 0.3s;
 }
 .sidebar p:hover {
   color: red;
+  transform: scale(1.1);
 }
 
 @keyframes fadeIn {
@@ -133,6 +141,15 @@ form .fa-search {
   }
   to {
     transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
   }
 }
 
