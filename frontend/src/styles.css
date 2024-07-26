@@ -26,6 +26,7 @@ html {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding: 1rem;
 }
 
 h1 {
@@ -33,6 +34,12 @@ h1 {
   font-size: 2rem;
   padding-left: 3rem;
   animation: fadeIn 2s ease-in-out;
+}
+
+.fa-bars {
+  color: #ffffff;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
 form {
@@ -86,6 +93,31 @@ form .fa-search {
   animation: slideIn 1s ease-out;
 }
 
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background-color: #383d46;
+  color: #ffffff;
+  padding: 1rem;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  margin: 0 0 1rem 0;
+}
+
+.sidebar p {
+  margin: 0.5rem 0;
+}
+.sidebar p:hover {
+  color: red;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -102,4 +134,18 @@ form .fa-search {
   to {
     transform: translateY(0);
   }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    fill: initial;
+  }
+  50% {
+    fill: #86ba90;
+  }
+}
+
+.blink {
+  animation: blink 1s steps(5, start) infinite;
 }

@@ -8,12 +8,16 @@ import {
 import axios from "axios";
 import "./styles.css";
 import { Tooltip } from "react-tooltip";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaBars } from "react-icons/fa";
 
 const App = () => {
   const [content, setContent] = useState("");
   const [visitedCountries, setVisitedCountries] = useState([]);
   const [countryInput, setCountryInput] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [highlightedCountry, setHighlightedCountry] = useState("");
+  const [highlightedCountryName, setHighlightedCountryName] = useState("");
+  const [countryCodeToNameMap, setCountryCodeToNameMap] = useState({});
 
   useEffect(() => {
     const fetchVisitedCountries = async () => {
@@ -30,7 +34,28 @@ const App = () => {
       }
     };
 
+    const fetchCountryCodeToNameMap = async () => {
+      try {
+        const response = await fetch("/features.json");
+        const data = await response.json();
+        const mapping = {};
+        if (
+          data.objects &&
+          data.objects.world &&
+          data.objects.world.geometries
+        ) {
+          data.objects.world.geometries.forEach((geo) => {
+            mapping[geo.id] = geo.properties.name;
+          });
+        }
+        setCountryCodeToNameMap(mapping);
+      } catch (error) {
+        console.error("Error fetching country code to name map:", error);
+      }
+    };
+
     fetchVisitedCountries();
+    fetchCountryCodeToNameMap();
   }, []);
 
   const handleCountryClick = async (countryCode) => {
@@ -74,7 +99,11 @@ const App = () => {
         );
 
         if (matchingGeo) {
-          handleCountryClick(matchingGeo.id);
+          setHighlightedCountry(matchingGeo.id);
+          setHighlightedCountryName(matchingGeo.properties.name);
+          setTimeout(() => {
+            setHighlightedCountry("");
+          }, 2000); // Remove highlight after 3 seconds
         } else {
           console.error("Country not found");
         }
@@ -88,10 +117,29 @@ const App = () => {
     setCountryInput("");
   };
 
+  const handleSidebarCountryClick = async (countryCode) => {
+    try {
+      const response = await axios.delete(
+        "http://localhost:5000/remove-country",
+        { data: { country_code: countryCode } }
+      );
+      console.log(`Country ${countryCode} removed:`, response.data);
+      setVisitedCountries((prevState) =>
+        prevState.filter((code) => code !== countryCode)
+      );
+    } catch (error) {
+      console.error("Error removing country:", error);
+    }
+  };
+
   return (
     <div className="App">
       <div className="header">
         <h1>Travel Tracker</h1>
+        <FaBars
+          className="fa-bars"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        />
         <form onSubmit={handleFormSubmit}>
           <input
             type="text"
@@ -103,9 +151,23 @@ const App = () => {
             placeholder="Enter country name"
           />
           <FaSearch className="fa-search" />
-          <button type="submit">Add</button>
+          <button type="submit">Change Color</button>
         </form>
       </div>
+      {sidebarOpen && (
+        <div className="sidebar">
+          <h2>Visited Countries</h2>
+          {visitedCountries.map((countryCode, index) => (
+            <p
+              key={index}
+              onClick={() => handleSidebarCountryClick(countryCode)}
+              style={{ cursor: "pointer" }}
+            >
+              {countryCodeToNameMap[countryCode] || countryCode}
+            </p>
+          ))}
+        </div>
+      )}
       <Tooltip id="my-tooltip">{content}</Tooltip>
       <div className="map">
         <ComposableMap
@@ -118,6 +180,7 @@ const App = () => {
                 const countryName = geo.properties.name;
                 const countryCode = geo.id;
                 const isVisited = visitedCountries.includes(countryCode);
+                const isHighlighted = highlightedCountry === countryCode;
 
                 return (
                   <Geography
@@ -132,6 +195,7 @@ const App = () => {
                     data-tooltip-id="my-tooltip"
                     data-tooltip-content={countryName}
                     onClick={() => handleCountryClick(countryCode)}
+                    className={isHighlighted ? "blink" : ""}
                     style={{
                       default: {
                         fill: isVisited ? "teal" : "#525966",
@@ -143,7 +207,7 @@ const App = () => {
                       },
                       hover: {
                         cursor: "pointer",
-                        fill: "teal",
+                        fill: isVisited ? "teal" : "teal",
                         outline: "none",
                       },
                     }}
