@@ -26,11 +26,11 @@ export const addCountry = async (req, res) => {
 export const removeCountry = async (req, res) => {
   const { country_code } = req.body;
   try {
-    const result = await pool.query(
+    const removeResult = await pool.query(
       "DELETE FROM visited_countries WHERE country_code = $1 RETURNING *",
       [country_code]
     );
-    if (result.rows.length > 0) {
+    if (removeResult.rows.length > 0) {
       res.json(result.rows[0]);
     } else {
     }
@@ -41,10 +41,10 @@ export const removeCountry = async (req, res) => {
 
 export const getVisitedCountries = async (req, res) => {
   try {
-    const result = await pool.query(
+    const getResult = await pool.query(
       "SELECT country_code FROM visited_countries"
     );
-    res.json(result.rows);
+    res.json(getResult.rows);
   } catch (err) {
     console.error(err);
   }
