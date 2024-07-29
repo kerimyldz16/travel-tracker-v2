@@ -1,10 +1,10 @@
 import express from "express";
-import countryController from "../controllers/index.js";
+import { addCountry, removeCountry, getVisitedCountries } from "../controllers";
 
 const router = express.Router();
 
-router.post("/add-country", countryController.addCountry);
-router.delete("/remove-country", countryController.removeCountry);
-router.get("/visited-countries", countryController.getVisitedCountries);
+router.post("/add-country", addCountry);
+router.delete("/remove-country", removeCountry);
+router.get("/visited-countries", getVisitedCountries);
 
 export default router;
