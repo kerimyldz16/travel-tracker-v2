@@ -10,6 +10,7 @@ export const addCountry = async (req, res) => {
     );
 
     if (checkResult.rows.length > 0) {
+      //Todo: Error Status Code
     } else {
       console.log(`Adding country code: ${country_code}`); //Debugging
       const insertResult = await pool.query(
