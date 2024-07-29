@@ -2,7 +2,9 @@ import axios from "axios";
 
 export const fetchVisitedCountries = async () => {
   try {
-    const response = await axios.get("http://localhost:5000/visited-countries");
+    const response = await axios.get(
+      "http://localhost:5000/api/visited-countries"
+    );
     return response.data.map((country) => country.country_code);
   } catch (error) {
     console.error("Error fetching visited countries:", error);
@@ -15,7 +17,7 @@ export const fetchCountryCodeToNameMap = async () => {
     const response = await fetch("/features.json");
     const data = await response.json();
     const mapping = {};
-    if (data.objects && data.objects.world && data.objects.world.geometries) {
+    if (data.objects.world.geometries) {
       data.objects.world.geometries.forEach((geo) => {
         mapping[geo.id] = geo.properties.name;
       });
@@ -23,19 +25,18 @@ export const fetchCountryCodeToNameMap = async () => {
     return mapping;
   } catch (error) {
     console.error("Error fetching country code to name map:", error);
-    return {};
   }
 };
 
 export const addCountry = async (countryCode) => {
   try {
-    const response = await axios.post("http://localhost:5000/add-country", {
+    const response = await axios.post("http://localhost:5000/api/add-country", {
       country_code: countryCode,
     });
     console.log(`Country ${countryCode} added:`, response.data); //Debugging
     return true;
   } catch (error) {
-    if (error.response && error.response.status === 409) {
+    if (error.response.status === 409) {
       console.error("Country already visited:", error.response.data);
     } else {
       console.error("Error updating country:", error);
@@ -47,7 +48,7 @@ export const addCountry = async (countryCode) => {
 export const removeCountry = async (countryCode) => {
   try {
     const response = await axios.delete(
-      "http://localhost:5000/remove-country",
+      "http://localhost:5000/api/remove-country",
       {
         data: { country_code: countryCode },
       }

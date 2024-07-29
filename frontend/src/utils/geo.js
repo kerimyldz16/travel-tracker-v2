@@ -10,7 +10,7 @@ export const fetchGeoData = async () => {
 };
 
 export const findMatchingGeo = (data, countryName) => {
-  if (data.objects && data.objects.world && data.objects.world.geometries) {
+  if (data.objects.world.geometries) {
     return data.objects.world.geometries.find(
       (geo) => geo.properties.name.toLowerCase() === countryName.toLowerCase()
     );

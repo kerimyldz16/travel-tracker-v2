@@ -10,7 +10,6 @@ export const addCountry = async (req, res) => {
     );
 
     if (checkResult.rows.length > 0) {
-      res.status(409).json({ error: "Country already visited" });
     } else {
       console.log(`Adding country code: ${country_code}`); //Debugging
       const insertResult = await pool.query(
@@ -21,7 +20,6 @@ export const addCountry = async (req, res) => {
     }
   } catch (err) {
     console.error(`Error adding country code: ${country_code}`, err);
-    res.status(500).json({ error: "Database error" });
   }
 };
 
@@ -35,11 +33,9 @@ export const removeCountry = async (req, res) => {
     if (result.rows.length > 0) {
       res.json(result.rows[0]);
     } else {
-      res.status(404).json({ error: "Country not found" });
     }
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database error" });
   }
 };
 
@@ -51,6 +47,5 @@ export const getVisitedCountries = async (req, res) => {
     res.json(result.rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Database error" });
   }
 };
