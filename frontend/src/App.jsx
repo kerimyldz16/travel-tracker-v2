@@ -1,10 +1,11 @@
+// src/App.jsx
 import React, { useState } from "react";
 import "./styles.css";
-import Header from "./components/Header.jsx";
-import Sidebar from "./components/Sidebar.jsx";
-import Map from "./components/Map.jsx";
-import useVisitedCountries from "./hooks/useVisitedCountries.js";
-import highlightAnimation from "./hooks/highlightAnimation.js";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import Map from "./components/Map";
+import useGeoData from "./hooks/useGeoData";
+import useHighlightAnimation from "./hooks/highlightAnimation";
 
 const App = () => {
   const [content, setContent] = useState("");
@@ -16,9 +17,9 @@ const App = () => {
     countryCodeToNameMap,
     handleCountryClick,
     handleSidebarCountryClick,
-  } = useVisitedCountries();
+  } = useHighlightAnimation();
 
-  const { highlightedCountry, handleFormSubmit } = highlightAnimation();
+  const { highlightedCountry, handleFormSubmit } = useGeoData();
 
   return (
     <div className="App">

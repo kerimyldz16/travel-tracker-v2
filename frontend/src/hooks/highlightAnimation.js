@@ -1,31 +1,57 @@
-import { useState } from "react";
-import { fetchGeoData, findMatchingGeo } from "../utils/geo.js";
+import { useState, useEffect } from "react";
+import {
+  fetchVisitedCountries,
+  addCountry,
+  removeCountry,
+  fetchCountryCodeToNameMap,
+} from "../utils/api.js";
 
-const highlightAnimation = () => {
-  const [highlightedCountry, setHighlightedCountry] = useState("");
+const useHighlightAnimation = () => {
+  const [visitedCountries, setVisitedCountries] = useState([]);
+  const [countryCodeToNameMap, setCountryCodeToNameMap] = useState({});
 
-  const handleFormSubmit = async (event, countryInput, setCountryInput) => {
-    event.preventDefault();
-    const data = await fetchGeoData();
-    if (data) {
-      const matchingGeo = findMatchingGeo(data, countryInput);
-      if (matchingGeo) {
-        setHighlightedCountry(matchingGeo.id);
-        setTimeout(() => {
-          setHighlightedCountry("");
-        }, 2000);
-      } else {
-        console.error("Country not found");
+  useEffect(() => {
+    const initializeData = async () => {
+      const countries = await fetchVisitedCountries();
+      const countryNameMap = await fetchCountryCodeToNameMap();
+      setVisitedCountries(countries);
+      setCountryCodeToNameMap(countryNameMap);
+    };
+
+    initializeData();
+  }, []);
+
+  const handleCountryClick = async (countryCode) => {
+    if (visitedCountries.includes(countryCode)) {
+      const success = await removeCountry(countryCode);
+      if (success) {
+        setVisitedCountries((prevState) =>
+          prevState.filter((code) => code !== countryCode)
+        );
+      }
+    } else {
+      const success = await addCountry(countryCode);
+      if (success) {
+        setVisitedCountries((prevState) => [...prevState, countryCode]);
       }
     }
+  };
 
-    setCountryInput("");
+  const handleSidebarCountryClick = async (countryCode) => {
+    const success = await removeCountry(countryCode);
+    if (success) {
+      setVisitedCountries((prevState) =>
+        prevState.filter((code) => code !== countryCode)
+      );
+    }
   };
 
   return {
-    highlightedCountry,
-    handleFormSubmit,
+    visitedCountries,
+    countryCodeToNameMap,
+    handleCountryClick,
+    handleSidebarCountryClick,
   };
 };
 
-export default highlightAnimation;
+export default useHighlightAnimation;
