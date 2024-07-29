@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { fetchVisitedCountries, addCountry, removeCountry } from "../utils/api";
+import {
+  fetchVisitedCountries,
+  addCountry,
+  removeCountry,
+  fetchCountryCodeToNameMap,
+} from "../utils/api.js";
 
 const useVisitedCountries = () => {
   const [visitedCountries, setVisitedCountries] = useState([]);

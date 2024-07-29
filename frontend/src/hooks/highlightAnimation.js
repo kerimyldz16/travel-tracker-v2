@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { fetchGeoData, findMatchingGeo } from "../utils/geo";
+import { fetchGeoData, findMatchingGeo } from "../utils/geo.js";
 
-const useGeoData = () => {
+const highlightAnimation = () => {
   const [highlightedCountry, setHighlightedCountry] = useState("");
 
   const handleFormSubmit = async (event, countryInput, setCountryInput) => {
@@ -28,4 +28,4 @@ const useGeoData = () => {
   };
 };
 
-export default useGeoData;
+export default highlightAnimation;
