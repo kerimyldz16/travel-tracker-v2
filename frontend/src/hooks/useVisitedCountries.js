@@ -1,4 +1,3 @@
-// src/hooks/useVisitedCountries.js
 import { useState, useEffect } from "react";
 import { fetchVisitedCountries, addCountry, removeCountry } from "../utils/api";
 

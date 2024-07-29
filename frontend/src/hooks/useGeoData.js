@@ -1,4 +1,3 @@
-// src/hooks/useGeoData.js
 import { useState } from "react";
 import { fetchGeoData, findMatchingGeo } from "../utils/geo";
 
