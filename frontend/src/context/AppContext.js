@@ -13,6 +13,7 @@ export const AppProvider = ({ children }) => {
   const [content, setContent] = useState("");
   const [visitedCountries, setVisitedCountries] = useState([]);
   const [countryInput, setCountryInput] = useState("");
+  const [filteredCountries, setFilteredCountries] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [highlightedCountry, setHighlightedCountry] = useState("");
   const [countryCodeToNameMap, setCountryCodeToNameMap] = useState({});
@@ -27,6 +28,17 @@ export const AppProvider = ({ children }) => {
 
     initializeData();
   }, []);
+
+  useEffect(() => {
+    if (countryInput.length > 0) {
+      const filtered = Object.values(countryCodeToNameMap).filter((name) =>
+        name.toLowerCase().startsWith(countryInput.toLowerCase())
+      );
+      setFilteredCountries(filtered);
+    } else {
+      setFilteredCountries([]);
+    }
+  }, [countryInput, countryCodeToNameMap]);
 
   const handleCountryClick = async (countryCode) => {
     if (visitedCountries.includes(countryCode)) {
@@ -53,7 +65,7 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const handleFormSubmit = async (event) => {
+  const handleFormSubmit = async (event, countryInput) => {
     event.preventDefault();
     const data = await fetchGeoData();
     if (data) {
@@ -79,6 +91,7 @@ export const AppProvider = ({ children }) => {
         visitedCountries,
         countryInput,
         setCountryInput,
+        filteredCountries,
         sidebarOpen,
         setSidebarOpen,
         highlightedCountry,
