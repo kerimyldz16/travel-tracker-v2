@@ -49,6 +49,7 @@ h1 {
   transition: transform 0.3s;
   padding: 1rem;
 }
+
 .fa-bars:hover {
   transform: rotate(90deg);
 }
@@ -83,6 +84,7 @@ form button {
   font-size: 1rem;
   transition: background-color 0.3s, color 0.3s, transform 0.3s;
 }
+
 form button:hover {
   background-color: #21a1f1;
   transform: scale(1.1);
@@ -103,6 +105,9 @@ form .fa-search {
   animation: slideIn 1s ease-out;
 }
 
+.sidebar hr {
+  margin-bottom: 1rem;
+}
 .sidebar {
   position: fixed;
   top: 0;
@@ -111,7 +116,7 @@ form .fa-search {
   height: 100%;
   background-color: #383d46;
   color: #ffffff;
-  padding: 1rem;
+  padding: 1.25rem;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
   z-index: 1000;
   overflow-y: auto;
@@ -124,17 +129,41 @@ form .fa-search {
 }
 
 .sidebar h2 {
-  margin: 1.75rem 0 1rem 0.7rem;
+  margin: 1.75rem 0 1rem 1.25rem;
   animation: fadeIn 1s ease-in-out;
 }
 
-.sidebar p {
+.country-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.country-item-p {
   margin: 0.5rem 0;
   transition: color 0.3s, transform 0.3s;
 }
-.sidebar p:hover {
+
+.delete-btn {
+  cursor: pointer;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.delete-btn:hover {
   color: red;
   transform: scale(1.1);
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
 }
 
 @keyframes fadeIn {
@@ -184,6 +213,7 @@ form .fa-search {
 
   .sidebar {
     width: 40%;
+    padding: 1rem;
   }
 
   .fa-bars {
@@ -204,11 +234,15 @@ form .fa-search {
     height: 70vh;
     width: 99%;
   }
+  .rightMenu {
+    margin-bottom: 28%;
+  }
 }
 
 @media (max-width: 480px) {
   .sidebar {
     width: 32%;
+    padding: 0.5rem;
   }
 
   .fa-bars {

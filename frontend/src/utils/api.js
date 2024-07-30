@@ -1,9 +1,9 @@
-import axios from "axios";
-axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
+import axiosInstance from "./axiosConfig.js";
+axiosInstance.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
 
 export const fetchVisitedCountries = async () => {
   try {
-    const response = await axios.get(`localhost:3000/visited-countries`);
+    const response = await axiosInstance.get(`/visited-countries`);
     return response.data.map((country) => country.country_code);
   } catch (error) {
     console.error("Error fetching visited countries:", error);
@@ -30,7 +30,7 @@ export const fetchCountryCodeToNameMap = async () => {
 
 export const addCountry = async (countryCode) => {
   try {
-    const response = await axios.post(`/add-country`, {
+    const response = await axiosInstance.post(`/add-country`, {
       country_code: countryCode,
     });
     console.log(`Country ${countryCode} added:`, response.data); // Debugging
@@ -47,7 +47,7 @@ export const addCountry = async (countryCode) => {
 
 export const removeCountry = async (countryCode) => {
   try {
-    const response = await axios.delete(`/remove-country`, {
+    const response = await axiosInstance.delete(`/remove-country`, {
       data: { country_code: countryCode },
     });
     console.log(`Country ${countryCode} removed:`, response.data); // Debugging

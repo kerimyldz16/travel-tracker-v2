@@ -1,3 +1,1 @@
-import * as countryController from "./countryController.js";
-
-export default countryController;
+export * from "./country.controller.js";

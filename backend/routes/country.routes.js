@@ -1,5 +1,9 @@
 import express from "express";
-import { addCountry, removeCountry, getVisitedCountries } from "../controllers";
+import {
+  addCountry,
+  removeCountry,
+  getVisitedCountries,
+} from "../controllers/index.js";
 
 const router = express.Router();
 
