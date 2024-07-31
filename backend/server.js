@@ -4,7 +4,8 @@ import bodyParser from "body-parser";
 import countryRoutes from "./routes/country.routes.js";
 
 const app = express();
-const port = 5000;
+
+const port = process.env.PORT || 5000;
 
 const corsOptions = {
   origin: [
@@ -15,6 +16,10 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 204,
 };
+
+app.get("/", (req, res) => {
+  res.send("Hello, this is the backend for Travel Tracker!");
+});
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
