@@ -1,10 +1,16 @@
-import axiosInstance from "./axiosConfig.js";
-axiosInstance.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
+import { supabase } from "./supabaseClient.js";
 
 export const fetchVisitedCountries = async () => {
   try {
-    const response = await axiosInstance.get(`/visited-countries`);
-    return response.data.map((country) => country.country_code);
+    const { data, error } = await supabase
+      .from("visited_countries")
+      .select("country_code");
+
+    if (error) {
+      console.error("Error fetching visited countries:", error);
+      return [];
+    }
+    return data.map((country) => country.country_code);
   } catch (error) {
     console.error("Error fetching visited countries:", error);
     return [];
@@ -30,27 +36,38 @@ export const fetchCountryCodeToNameMap = async () => {
 
 export const addCountry = async (countryCode) => {
   try {
-    const response = await axiosInstance.post(`/add-country`, {
-      country_code: countryCode,
-    });
-    console.log(`Country ${countryCode} added:`, response.data); // Debugging
+    const { data, error } = await supabase
+      .from("visited_countries")
+      .insert([{ country_code: countryCode }]);
+
+    if (error) {
+      if (error.status === 409) {
+        console.error("Country already visited:", error.message);
+      } else {
+        console.error("Error adding country:", error);
+      }
+      return false;
+    }
+    console.log(`Country ${countryCode} added:`, data);
     return true;
   } catch (error) {
-    if (error.response && error.response.status === 409) {
-      console.error("Country already visited:", error.response.data);
-    } else {
-      console.error("Error updating country:", error);
-    }
+    console.error("Error adding country:", error);
     return false;
   }
 };
 
 export const removeCountry = async (countryCode) => {
   try {
-    const response = await axiosInstance.delete(`/remove-country`, {
-      data: { country_code: countryCode },
-    });
-    console.log(`Country ${countryCode} removed:`, response.data); // Debugging
+    const { data, error } = await supabase
+      .from("visited_countries")
+      .delete()
+      .eq("country_code", countryCode);
+
+    if (error) {
+      console.error("Error removing country:", error);
+      return false;
+    }
+    console.log(`Country ${countryCode} removed:`, data);
     return true;
   } catch (error) {
     console.error("Error removing country:", error);
