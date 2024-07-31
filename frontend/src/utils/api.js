@@ -1,10 +1,11 @@
 import { supabase } from "./supabaseClient.js";
 
-export const fetchVisitedCountries = async () => {
+export const fetchVisitedCountries = async (userId) => {
   try {
     const { data, error } = await supabase
       .from("visited_countries")
-      .select("country_code");
+      .select("country_code")
+      .eq("user_id", userId);
 
     if (error) {
       console.error("Error fetching visited countries:", error);
@@ -34,11 +35,11 @@ export const fetchCountryCodeToNameMap = async () => {
   }
 };
 
-export const addCountry = async (countryCode) => {
+export const addCountry = async (countryCode, userId) => {
   try {
     const { data, error } = await supabase
       .from("visited_countries")
-      .insert([{ country_code: countryCode }]);
+      .insert([{ country_code: countryCode, user_id: userId }]);
 
     if (error) {
       if (error.status === 409) {
@@ -56,12 +57,13 @@ export const addCountry = async (countryCode) => {
   }
 };
 
-export const removeCountry = async (countryCode) => {
+export const removeCountry = async (countryCode, userId) => {
   try {
     const { data, error } = await supabase
       .from("visited_countries")
       .delete()
-      .eq("country_code", countryCode);
+      .eq("country_code", countryCode)
+      .eq("user_id", userId);
 
     if (error) {
       console.error("Error removing country:", error);

@@ -1,4 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../utils/firebaseConfig.js";
 import {
   fetchVisitedCountries,
   addCountry,
@@ -17,12 +19,27 @@ export const AppProvider = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [highlightedCountry, setHighlightedCountry] = useState("");
   const [countryCodeToNameMap, setCountryCodeToNameMap] = useState({});
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+        fetchVisitedCountries(user.uid).then((countries) => {
+          setVisitedCountries(countries);
+        });
+      } else {
+        setUser(null);
+        setVisitedCountries([]);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const initializeData = async () => {
-      const countries = await fetchVisitedCountries();
       const countryNameMap = await fetchCountryCodeToNameMap();
-      setVisitedCountries(countries);
       setCountryCodeToNameMap(countryNameMap);
     };
 
@@ -41,15 +58,17 @@ export const AppProvider = ({ children }) => {
   }, [countryInput, countryCodeToNameMap]);
 
   const handleCountryClick = async (countryCode) => {
+    if (!user) return;
+
     if (visitedCountries.includes(countryCode)) {
-      const success = await removeCountry(countryCode);
+      const success = await removeCountry(countryCode, user.uid);
       if (success) {
         setVisitedCountries((prevState) =>
           prevState.filter((code) => code !== countryCode)
         );
       }
     } else {
-      const success = await addCountry(countryCode);
+      const success = await addCountry(countryCode, user.uid);
       if (success) {
         setVisitedCountries((prevState) => [...prevState, countryCode]);
       }
@@ -57,7 +76,9 @@ export const AppProvider = ({ children }) => {
   };
 
   const handleSidebarCountryClick = async (countryCode) => {
-    const success = await removeCountry(countryCode);
+    if (!user) return;
+
+    const success = await removeCountry(countryCode, user.uid);
     if (success) {
       setVisitedCountries((prevState) =>
         prevState.filter((code) => code !== countryCode)
@@ -99,6 +120,8 @@ export const AppProvider = ({ children }) => {
         handleSidebarCountryClick,
         handleFormSubmit,
         countryCodeToNameMap,
+        user,
+        setUser,
       }}
     >
       {children}

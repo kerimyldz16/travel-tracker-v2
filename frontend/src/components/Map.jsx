@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import { Tooltip } from "react-tooltip";
-import { AppContext } from "../context/AppContext";
+import { AppContext } from "../context/AppContext.js";
 
 const Map = () => {
   const {

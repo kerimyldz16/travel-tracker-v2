@@ -6,19 +6,20 @@ const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export const addCountry = async (req, res) => {
-  const { country_code } = req.body;
+  const { country_code, user_id } = req.body;
   try {
     const { data, error } = await supabase
       .from("visited_countries")
       .select("*")
-      .eq("country_code", country_code);
+      .eq("country_code", country_code)
+      .eq("user_id", user_id);
 
     if (data.length > 0) {
       res.status(409).json({ error: "Country already visited" });
     } else {
       const { data: insertData, error: insertError } = await supabase
         .from("visited_countries")
-        .insert([{ country_code }])
+        .insert([{ country_code, user_id }])
         .single();
 
       if (insertError) throw insertError;
@@ -32,12 +33,13 @@ export const addCountry = async (req, res) => {
 };
 
 export const removeCountry = async (req, res) => {
-  const { country_code } = req.body;
+  const { country_code, user_id } = req.body;
   try {
     const { data, error } = await supabase
       .from("visited_countries")
       .delete()
       .eq("country_code", country_code)
+      .eq("user_id", user_id)
       .single();
 
     if (error) {
@@ -52,11 +54,12 @@ export const removeCountry = async (req, res) => {
 };
 
 export const getVisitedCountries = async (req, res) => {
+  const { user_id } = req.query;
   try {
     const { data, error } = await supabase
       .from("visited_countries")
-      .select("country_code");
-
+      .select("country_code")
+      .eq("user_id", user_id);
     if (error) throw error;
 
     res.json(data);
