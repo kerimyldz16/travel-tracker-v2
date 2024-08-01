@@ -31,12 +31,10 @@ export const AppProvider = ({ children }) => {
         fetchVisitedCountries(user.uid).then((countries) => {
           setVisitedCountries(countries);
         });
-        navigate("/"); // Redirect to the main page after login
+        navigate("/"); // login başarılıysa main'e yönlendir
       } else {
         setUser(null);
         setVisitedCountries([]);
-        // Remove this navigate to avoid redirect loop
-        // navigate("/login");
       }
     });
 

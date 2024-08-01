@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { AppContext } from "../context/appContext.js";
 import { register } from "../utils/authService.js";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { Link } from "react-router-dom";
 
 const Register = () => {
@@ -9,14 +8,12 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Initialize navigate
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
       const user = await register(email, password);
       setUser(user);
-      navigate("/login"); // Redirect to login page after successful registration
     } catch (err) {
       setError(err.message);
     }

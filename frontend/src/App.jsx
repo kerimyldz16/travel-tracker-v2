@@ -15,7 +15,6 @@ const App = () => {
     <Router>
       <AppProvider>
         <Routes>
-          {/* Only authenticated users can access Main */}
           <Route
             path="/"
             element={
@@ -24,7 +23,6 @@ const App = () => {
               </PrivateRoute>
             }
           />
-          {/* Login and Register are open to unauthenticated users */}
           <Route
             path="/login"
             element={
@@ -47,14 +45,14 @@ const App = () => {
   );
 };
 
-// Restrict access to Main if not authenticated
+// auth değilse erişimi kısıtla!
 const PrivateRoute = ({ children }) => {
   const { user } = React.useContext(AppContext);
 
   return user ? children : <Navigate to="/login" />;
 };
 
-// Allow only unauthenticated users to access login/register
+// auth ise login/register'a erişimi kısıtla!
 const PublicRoute = ({ children }) => {
   const { user } = React.useContext(AppContext);
 
