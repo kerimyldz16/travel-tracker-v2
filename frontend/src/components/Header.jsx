@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
 import { FaSearch, FaBars } from "react-icons/fa";
 import { AppContext } from "../context/appContext.js";
-import { Link } from "react-router-dom";
-import { auth } from "../utils/firebaseConfig.js";
 
 const Header = () => {
   const {
@@ -12,14 +10,7 @@ const Header = () => {
     setSidebarOpen,
     sidebarOpen,
     filteredCountries,
-    user,
-    setUser,
   } = useContext(AppContext);
-
-  const handleLogout = () => {
-    auth.signOut();
-    setUser(null);
-  };
 
   return (
     <div className="header">
@@ -41,7 +32,6 @@ const Header = () => {
             placeholder="Enter country name"
           />
           <FaSearch className="fa-search" />
-          <button type="submit">Find Country</button>
           {filteredCountries.length > 0 && (
             <ul className="suggestions">
               {filteredCountries.map((countryName, index) => (
@@ -62,15 +52,6 @@ const Header = () => {
           className="fa-bars"
           onClick={() => setSidebarOpen(!sidebarOpen)}
         />
-        {user ? (
-          <button className="logout-btn" onClick={handleLogout}>
-            Logout
-          </button>
-        ) : (
-          <div>
-            <Link to="/login">Login</Link>
-          </div>
-        )}
       </div>
     </div>
   );

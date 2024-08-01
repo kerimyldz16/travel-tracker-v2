@@ -40,7 +40,7 @@ const Register = () => {
       {error && <p className="error">{error}</p>}
       <div className="register-link">
         <p>
-          Do you have an account?<Link to="/login">Login</Link>
+          Do you have an account?<Link to="/login"> Login</Link>
         </p>
       </div>
     </div>
