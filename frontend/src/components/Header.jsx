@@ -63,11 +63,12 @@ const Header = () => {
           onClick={() => setSidebarOpen(!sidebarOpen)}
         />
         {user ? (
-          <button onClick={handleLogout}>Logout</button>
+          <button className="logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
         ) : (
           <div>
             <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
           </div>
         )}
       </div>
