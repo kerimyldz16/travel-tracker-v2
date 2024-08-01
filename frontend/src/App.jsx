@@ -5,7 +5,7 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import { AppProvider, AppContext } from "./context/AppContext.js";
+import { AppProvider, AppContext } from "./context/appContext.js";
 import Main from "./layouts/Main.jsx";
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";

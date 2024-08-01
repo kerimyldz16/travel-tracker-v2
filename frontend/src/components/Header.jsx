@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { FaSearch, FaBars } from "react-icons/fa";
-import { AppContext } from "../context/AppContext";
+import { AppContext } from "../context/appContext.js";
 import { Link } from "react-router-dom";
 import { auth } from "../utils/firebaseConfig.js";
 

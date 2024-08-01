@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { AppContext } from "../context/AppContext.js";
+import { AppContext } from "../context/appContext.js";
 import { register } from "../utils/authService.js";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { Link } from "react-router-dom";

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AppContext } from "../context/AppContext.js";
+import { AppContext } from "../context/appContext.js";
 import { FaTimes } from "react-icons/fa";
 
 const Sidebar = () => {
