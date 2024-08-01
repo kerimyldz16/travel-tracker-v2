@@ -14,7 +14,7 @@ export const register = async (email, password) => {
     );
     return userCredential.user;
   } catch (error) {
-    console.error("Error registering new user:", error);
+    console.error("Error registering new user:", error); //debugging
     throw error;
   }
 };
@@ -28,7 +28,7 @@ export const login = async (email, password) => {
     );
     return userCredential.user;
   } catch (error) {
-    console.error("Error logging in user:", error);
+    console.error("Error logging in user:", error); //debugging
     throw error;
   }
 };
@@ -37,7 +37,7 @@ export const logout = async () => {
   try {
     await signOut(auth);
   } catch (error) {
-    console.error("Error logging out user:", error);
+    console.error("Error logging out user:", error); //debugging
     throw error;
   }
 };
