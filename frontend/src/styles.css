@@ -120,7 +120,7 @@ form .fa-search {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s, transform 0.3s;
-  display: inline-block;
+  display: flex;
   white-space: nowrap;
 }
 
@@ -384,6 +384,10 @@ form .fa-search {
     display: none;
   }
 
+  .logout-btn {
+    justify-content: flex-start;
+  }
+
   .sidebar {
     width: 40%;
     padding: 1rem;
@@ -410,7 +414,7 @@ form .fa-search {
 
   .rightMenu {
     margin-bottom: 1rem;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-end;
     gap: 0.5rem;
   }
