@@ -23,7 +23,7 @@ export const fetchCountryCodeToNameMap = async () => {
     const response = await fetch("/features.json");
     const data = await response.json();
     const mapping = {};
-    if (data.objects && data.objects.world && data.objects.world.geometries) {
+    if (data.objects.world.geometries) {
       data.objects.world.geometries.forEach((geo) => {
         mapping[geo.id] = geo.properties.name;
       });
